@@ -1,0 +1,154 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[parfill]{parskip}
+\usepackage{fullpage}
+\usepackage{dirtytalk}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{listings}
+
+\pagenumbering{gobble}
+
+\newenvironment{mymatrix}
+{\left[ \begin{array}{ccc|c}}
+{\end{array} \right]}
+
+\begin{document}
+	Gabriel Lemyre \& Simon Bernier St-Pierre \hfill Devoir 2\\
+	\section*{Question 1}
+	\begin{enumerate}
+		\item[a)]
+		$$
+		T(n) =
+		\begin{cases}
+		2, & 0 \le n \le 1\\
+		3T(\frac{n}{3}) + 2T(\frac{n}{3}) + 16 \log_3 n & n > 1 \\
+		\end{cases}
+		$$
+		\begin{enumerate}
+			\item[(1)] $$\text{On replace } n \text{ par } 3^k$$
+			\item[(2)] $$t_k = T(3^k)$$
+			\item[(3)]
+			$$t_k = 3T(3^{k-1}) + 2T(3^{k-1}) + 16 \log_3 3^k$$
+			$$t_k = 5T(3^{k-1}) + 16k$$
+			$$t_k = 5t_{k-1} + 16k$$
+			\item[(4)]
+			$$t_k - 5t_{k-1} = 16k$$
+			$$(x-5)(x-1)^2$$
+			$$r_1 = 5, r_2 = 1$$
+			$$t_k = c_15^k + c_21^k + c_3k1^k$$
+			\item[(5)]
+			$$T(3^k) = tk \text{ donc, } T(n) = t \log_3 n$$
+			$$T(n) = c_15^{log_3 n} + c_21^{log_3 n} + c_3 \log_3 n1^{log_3 n}$$
+			\item[(6)]
+			$$T(n) \in O(5^{log_3 n})$$
+			\item[(7)]
+			$$T(1) = 2$$
+			$$T(3) = 3T(3) + 16 \log_3 3 = 10 + 16 = 26$$
+			$$T(4) = 5T(3) + 16 \log_3 9 = 130 + 32 = 162$$
+			
+			\[
+			\begin{mymatrix}
+			1 & 1 & 0 & 2\\
+			5 & 1 & 1 & 26\\
+			25 & 1 & 2 & 162\\
+			\end{mymatrix}
+			\rightarrow
+			\begin{mymatrix}
+			1 & 1 & 0 & 2\\
+			5 & 1 & 1 & 26\\
+			0 & -4 & -3 & 32\\
+			\end{mymatrix}
+			\rightarrow
+			\begin{mymatrix}
+			1 & 1 & 0 & 2\\
+			5 & 1 & 1 & 26\\
+			0 & 4 & 3 & -32\\
+			\end{mymatrix}
+			\rightarrow
+			\]
+			
+			\[
+			\begin{mymatrix}
+			1 & 1 & 0 & 2\\
+			4 & 0 & 1 & 24\\
+			0 & 4 & 3 & -32\\
+			\end{mymatrix}
+			\rightarrow
+			\begin{mymatrix}
+			1 & 1 & 0 & 2\\
+			4 & 0 & 1 & 24\\
+			4 & 4 & 4 & -8\\
+			\end{mymatrix}
+			\rightarrow
+			\begin{mymatrix}
+			1 & 1 & 0 & 2\\
+			4 & 0 & 1 & 24\\
+			0 & 0 & 4 & -16\\
+			\end{mymatrix}
+			\rightarrow
+			\]
+			
+			\[
+			\begin{mymatrix}
+			1 & 1 & 0 & 2\\
+			4 & 0 & 1 & 24\\
+			0 & 0 & 1 & -4\\
+			\end{mymatrix}
+			\rightarrow
+			\begin{mymatrix}
+			1 & 1 & 0 & 2\\
+			4 & 0 & 0 & 28\\
+			0 & 0 & 1 & -4\\
+			\end{mymatrix}
+			\rightarrow
+			\begin{mymatrix}
+			1 & 1 & 0 & 2\\
+			1 & 0 & 0 & 7\\
+			0 & 0 & 1 & -4\\
+			\end{mymatrix}
+			\rightarrow
+			\]
+			
+			\[
+			\begin{mymatrix}
+			0 & 1 & 0 & -5\\
+			1 & 0 & 0 & 7\\
+			0 & 0 & 1 & -4\\
+			\end{mymatrix}
+			\rightarrow
+			\begin{mymatrix}
+			1 & 0 & 0 & 7\\
+			0 & 1 & 0 & -5\\
+			0 & 0 & 0 & -4\\
+			\end{mymatrix}
+			\]
+			\item[(8)]
+			$$T(n) = 7 \times 5^{\log_3 n} -5 \times 1^{\log_3 n} -4 \log_3 n \times 1^{\log_3 n}$$
+			$$= 7 \times 5^{\log_3 n} - 4{\log_3 n} - 5$$
+		\end{enumerate}
+		
+		\item[b)]
+		
+		\begin{enumerate}
+			\item[(i)] 
+			$c_1$ est positif, on a donc l'ordre exact. $c_1$ était la constante la plus significative.
+			$$T(n) \in \Theta(5^{log_3 n})$$
+			\item[(ii)] En utilisant du ``Intelligent guesswork'' et la ``smoothness rule'', on peut arriver à la même réponse.
+		\end{enumerate}
+	\end{enumerate}
+
+	\section*{Question 2}
+
+	\section*{Question 3}
+	On trie les chefs par temps utilisé dans la salle B en ordre décroissant. Ainsi, les chefs qui prennent
+	beaucoup de temps dans la salle B passeront en premier, alors que les chefs qui passent peu de temps dans la salle B attenderons après les autres. On peut se permettre ce fonctionnement parce que la salle B ne limite pas le nombre de chefs, alors que la salle A demande l'exclusivité. Un algo simple en Python qui produit l'horaire des chefs par numéro est disponible ci dessous.
+	\begin{lstlisting}[language=Python]
+def horaire(n: int) -> List[int]:
+	h = list(range(n))
+	h.sort(key=lambda i: c[i] + d[i], reverse=True)
+	return h
+	\end{lstlisting}	
+	\section*{Question 4}
+\end{document}
