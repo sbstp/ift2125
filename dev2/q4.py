@@ -21,14 +21,28 @@ def random_graph(n, m):
 
     # A completer...
     # Look at Demo5 for inspiration on how to use random package
-    A = np.array((n, m))  # need to create the nxm boolean array here
+    A = np.zeros((n, m))  # need to create the nxm boolean array here
+    for i in range(n):
+        for j in range(m):
+            A[i][j] = random.randint(0, 1)
 
     return A
 
 
-def intersection(A):
-    # A completer...
+def intersection(A):  # O(n * m)
+    n, m = A.shape
     S = set()
+    for i in range(n):  # for each set
+        Si = set(j for j in range(m) if A[i][j])  # O(m)
+        for v in S:
+            # check if any number in Si is in S
+            if v in Si:
+                break
+        else:
+            # no element of Si is in S, add any element to it
+            if len(Si) > 0:
+                S.add(next(iter(Si)))
+        assert any(v in S for v in Si)  # just making sure
     return S
 
 
@@ -46,8 +60,8 @@ def experiment(n, m, nb_experiments):
 if __name__ == "__main__":  # main() will only be called when using "python file.py"
     # Rien d'autre ne doit etre necessaire dans le main pour retourner moyenne/std
     # Nothing else should go there when you submit your code, do not change anything
-    n = 20
-    m = 100
+    n = 20  # ensembles
+    m = 100  # nombres
     k = 50
 
     size_of_S = experiment(n, m, k)

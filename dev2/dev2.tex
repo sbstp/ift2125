@@ -8,8 +8,6 @@
 \usepackage{mathtools}
 \usepackage{listings}
 
-\pagenumbering{gobble}
-
 \newenvironment{mymatrix}
 {\left[ \begin{array}{ccc|c}}
 {\end{array} \right]}
@@ -140,7 +138,20 @@
 	\end{enumerate}
 
 	\section*{Question 2}
-
+	Soit $ES$ l'ensemble solution et $Q$ la solution optimale. Définissons $ES$ et $Q$ comme séquence de pièces choisies en ordre de selection:
+	$$ES = (ES_1, ES_2, ..., ES_n)$$
+	$$Q = (Q_1, Q_2, ..., Q_n)$$
+	Supposons que l'ensemble solution $ES$ de notre algorithme nous donne soit la solution $Q$, soit une solution strictement plus courte.
+	Assumant que $ES\ne Q$ et $i$ l'index du premier élément différent, i.e. à $x_i \in Q$,
+	$$ES = \{x_1, x_2, ..., x_n\} \text{ et } Q = \{x_1, x_2, ..., x_{i-1}, y_i, y_{i+1}, ..., y_k\}$$
+	La taille de $Q$ est donc strictement plus grande que $ES$ puique $x_i > y_i$, et donc, selon l'ensemble de départ, $x_i \ge py_i \rightarrow x_i \ge yi_1 + yi_2 + ... + yi_p$.
+	
+	Donc $yi_1 + yi_2 + ... + yi_p$ se trouvent tous dans l'ensemble Q afin d'égaliser $x_i$ (dans le meilleur cas, dans le pire cas la séquence sera de $yi_1 + yi_2 + ... + yi_{p^p}$). Appelons cette séquence l'ensemble $Y$.
+	
+	On obtient donc une nouvelle solution optimale en effectuant
+	$$Q_{opt} \leftarrow Q \cup \{x_i\} \setminus \{Y\}$$
+	Il s'agit donc d'une contradiction puique $Q_{opt}$ est plus petit que $Q$, notre algorithme vorace trouve donc la solution optimale.
+	
 	\section*{Question 3}
 	On trie les chefs par temps utilisé dans la salle B en ordre décroissant. Ainsi, les chefs qui prennent
 	beaucoup de temps dans la salle B passeront en premier, alors que les chefs qui passent peu de temps dans la salle B attenderons après les autres. On peut se permettre ce fonctionnement parce que la salle B ne limite pas le nombre de chefs, alors que la salle A demande l'exclusivité. Un algo simple en Python qui produit l'horaire des chefs par numéro est disponible ci dessous.
@@ -151,4 +162,19 @@ def horaire(n: int) -> List[int]:
 	return h
 	\end{lstlisting}	
 	\section*{Question 4}
+	\begin{enumerate}
+		\item[(a)]
+		Oui, c'est un matroïde.
+		$$C = S, I = \{S_1,...S_k\}, S_i \subseteq C$$
+		$$S \cap S_i = \O, \forall i \text{ implique que } I = \{\O\}$$
+		
+	 	$$\text{Soit } X, Y \subseteq C$$
+		$$ \O \in I \textbf{ trivialité}$$
+		$$ X = \O, Y = \O, Y \subseteq X, Y \in I \textbf{ hérédité}$$
+		$$\text{Il n'y a pas de Y plus grand de X, donc} \textbf{ échange}$$
+		\item[(b)]
+		Non, ce n'est pas un matroïde, car la trivialité n'est pas respectée.\\
+		$$C = S, I = \{S_1,...S_k\}, S_i \subseteq C$$
+		$$S \cap S_i \ne \O, \forall i \text{ implique que } \O \notin I$$
+	\end{enumerate}
 \end{document}
