@@ -34,6 +34,8 @@ def intersection(A):  # O(n * m)
     S = set()
     for i in range(n):  # for each set
         Si = set(j for j in range(m) if A[i][j])  # O(m)
+        if len(Si) == 0:  # https://studium.umontreal.ca/mod/forum/discuss.php?d=519988#p980016
+            return set()
         for v in S:
             # check if any number in Si is in S
             if v in Si:
