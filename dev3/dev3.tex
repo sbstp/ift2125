@@ -1,0 +1,139 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[parfill]{parskip}
+\usepackage{fullpage}
+\usepackage{dirtytalk}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{courier}
+
+\lstset{basicstyle=\ttfamily}
+
+\newenvironment{mymatrix}
+{\left[ \begin{array}{cc|c}}
+	{\end{array} \right]}
+
+
+\begin{document}
+	Gabriel Lemyre \& Simon Bernier St-Pierre \hfill Devoir 2\\
+	\section*{Question 1}
+	La récurrence de \lstinline|mergesort4| est
+	$$T(n) = 4T(\frac{n}{4}) + \Theta(n)$$
+	car à chaque étape on divise la liste en 4, et pour chaque sous liste on appèle à nouveau \lstinline|mergesort4|. À chaque étape, on doit assembler les sous-listes en une seule liste, chose qui se fait linéairement, d'où $\Theta(n)$.
+	
+	On peut résoudre cette récurrence facilement avec le \textit{master theorem},
+	$$a = 4, b = 4, f(n) = n, c = 1$$
+	$$\log_4 4 = c$$
+	En utilisant le cas 2 du théorème,
+	$$t(n) = O(n\log n)$$
+	
+	Pour $T(n)$, on fait une substitution $T(n) \le cn\log n$ pour un $c > 0$.
+	\begin{equation*}
+	\begin{split}
+	T(n) & = \sqrt{n}T(\frac{n}{\sqrt{n}}) + n\\
+	T(n) & \le \sqrt{n}( \frac{cn}{\sqrt{n}}\log (\frac{n}{\sqrt{n}}) ) + n\\
+	& = cn\log (\frac{n}{\sqrt{n}}) + n\\
+	& = cn\log (n) - cn\log (\sqrt{n}) + n\\
+	& = cn\log (n) - cn\log (n^{1/2}) + n\\
+	& = cn\log (n) - \frac{1}{2}cn\log n + n\\
+	& = cn\log (n) + n\\
+	& = O(n\log n)
+	\end{split}
+	\end{equation*}
+	Donc, $O(T(n)) \subseteq O(t(n))$. C'est normal puisqu'on ne peux pas rendre un algorithme diviser pour régner plus rapide en faisant plus de divisions. Plus de divisions, plus d'appels à faire à chaque niveau.
+	\section*{Question 2}
+	\setcounter{equation}{0})
+	\begin{enumerate}
+		\item[(a)]
+		\begin{verbatim}
+turbo(1, 51)
+ turbo(1, 48)
+  turbo(1, 32)
+   turbo(1, 4)
+    turbo(1, 2)
+    turbo(1, 2)
+   turbo(1, 8)
+    turbo(1, 2)
+    turbo(1, 4)
+     turbo(1, 2)
+     turbo(1, 2)
+  turbo(1, 16)
+   turbo(1, 4)
+    turbo(1, 2)
+     turbo(1, 2)
+   turbo(1, 4)
+   	turbo(1, 2)
+	turbo(1, 2)
+ turbo(1, 3)
+  turbo(1, 2)
+  turbo(1, 1)
+		\end{verbatim}
+		\item[(b)]
+		Récurrence posée:
+		\begin{equation*}
+		t_k =
+		\begin{cases}
+		3 \text{ si } k=1\\
+		4 + t_{(k-1)} \text{ si } k > 1\\
+		\end{cases}
+		\end{equation*}
+		\item[(c)]
+		\setcounter{equation}{0}
+		\begin{equation*}
+		T(n) =
+		\begin{cases}
+		1 \text{ si } n=0\\
+		3 \text{ si } n=4\\
+		4 + T(n/4) \text{ si } n>4 \text{ et n est une puissance de 2 d'une puissance de 2}
+		\end{cases}
+		\end{equation*}
+		
+
+		$$\text{On remplace n par } 2^{2^i}$$
+		$$t_i = T(2^{2^i})$$
+		$$t_i = 4 + t_{i-1}$$
+		$$t_i - t_{i-1} = 4$$
+		$$(x-1)(x-1)$$
+		$$t_i = C_1\times 1^i + C_2\times i \times 1^i$$
+		$$T(2^{2^i}) = t_i \text{ donc,}$$
+		$$T(n) = C_1\times 1^{\log_2(\log_2(n))} + C_2\times \log_2(\log_2(n)) \times 1^{\log_2(\log_2(n))}$$
+		$$T(n) = C_1 + C_2 \times \log_2(\log_2(n))$$
+		$$T(n) \in O(\log(\log(n)))$$
+		$$
+		\begin{mymatrix}
+			1&1&5\\
+			1&2&7\\
+		\end{mymatrix}
+		\rightarrow
+		\begin{mymatrix}
+		1&1&3\\
+		0&1&4\\
+		\end{mymatrix}
+		\rightarrow
+		\begin{mymatrix}
+		1&0&-1\\
+		0&1&4\\
+		\end{mymatrix}
+		$$
+		$$C_1 = -1, C_2 = 4$$
+		$$T(n) = -1 + 4 \log_2(\log_2(n))$$
+		$$= 4 \log_2(\log_2(n)) - 1$$
+		$$T(n) \in \Theta(\log_2(\log_2(n)) \text{, si n est une puissance de 2 d'une puissance de 2})$$
+	\end{enumerate}
+	
+	\section*{Question 3}
+	Turbo engendre 10 multiplications\\
+	expoDC engendre 8 multiplications\\
+	$a^51$ peut s'effecteur en 6 multiplications, soit:
+	\begin{itemize}
+		\item $a^2 = a * a$
+		\item $a^4 = a^2 * a^2$
+		\item $a^{16} = a^4 * a^4$
+		\item $a^{17} = a^{16} * a$
+		\item $a^{34} = a^{17} * a^{17}$
+		\item $a^{51} = a^{34} * a^{17}$
+	\end{itemize}
+
+\end{document}
